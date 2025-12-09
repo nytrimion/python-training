@@ -126,3 +126,9 @@ Voir `docs/00_overview.md` pour la vue d'ensemble et le suivi de progression.
 2. **Asyncio** - Event loop, async/await, FastAPI async
 3. **Écosystème** - Celery, SQLAlchemy, pytest
 4. **Intégration** - Projet EventDispatcher DDD complet
+
+### Mise à jour automatique
+Quand un objectif de module est **validé par l'apprenant** (exercice complété et compris) :
+1. Mettre à jour le statut ⬜ → ✅ dans `docs/00_overview.md`
+2. Mettre à jour la barre de progression globale
+3. Informer l'apprenant de sa progression
