@@ -14,7 +14,7 @@ Transition de développeur senior PHP vers Python, en capitalisant sur l'experti
 | Objectif | Statut |
 |----------|--------|
 | Comprendre le GIL et ses implications | ✅ |
-| Maîtriser la différence long-running vs process-per-request | ⬜ |
+| Maîtriser la différence long-running vs process-per-request | ✅ |
 | Écrire du code Python idiomatique (PEP8, type hints) | ⬜ |
 | Utiliser decorators et context managers | ⬜ |
 | Maîtriser comprehensions et generators | ⬜ |
@@ -73,12 +73,12 @@ Transition de développeur senior PHP vers Python, en capitalisant sur l'experti
 ## Progression Globale
 
 ```
-Module 1 : Fondations     [✅⬜⬜⬜⬜] 20%
+Module 1 : Fondations     [✅✅⬜⬜⬜] 40%
 Module 2 : Asyncio        [⬜⬜⬜⬜⬜] 0%
 Module 3 : Écosystème     [⬜⬜⬜⬜⬜] 0%
 Module 4 : Intégration    [⬜⬜⬜⬜⬜] 0%
 ─────────────────────────────────────
-Total                     [⬜⬜⬜⬜⬜] 5%
+Total                     [⬜⬜⬜⬜⬜] 10%
 ```
 
 ---
