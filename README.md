@@ -1,10 +1,29 @@
-# Formation Python
+# 🐍 Formation Python - De PHP Senior à Python Expert
 
-Formation Python pour développeur senior PHP - Transition vers l'écosystème Python moderne.
+> Formation pratique assistée par Claude Code pour développeurs PHP expérimentés
 
-## Objectif
+![Python](https://img.shields.io/badge/Python-3.12+-blue)
+![Claude Code](https://img.shields.io/badge/Claude%20Code-Learning%20Mode-purple)
+![License](https://img.shields.io/badge/License-MIT-green)
 
-Maîtriser les spécificités Python en capitalisant sur l'expertise existante (DDD, Clean Architecture, SOLID).
+## À propos
+
+Cette formation a été conçue pour les **développeurs seniors PHP** souhaitant maîtriser Python en capitalisant sur leur
+expertise existante (DDD, Clean Architecture, SOLID, CQRS).
+
+**Approche pédagogique :**
+
+- 🎯 Théorie → Pratique guidée
+- 🤖 Assistée par Claude Code (mode Learning)
+- 📝 L'apprenant code lui-même, Claude guide et corrige
+- 🔄 Analogies PHP/Python pour faciliter la transition
+
+## Comment utiliser cette formation
+
+1. **Cloner le repo** et installer les dépendances avec UV
+2. **Ouvrir avec Claude Code** (`claude` dans le terminal)
+3. **Suivre les modules** dans l'ordre ([docs/00_overview.md](docs/00_overview.md))
+4. **Coder les exercices** — Claude ne code pas à ta place !
 
 ## Prérequis
 
@@ -14,13 +33,17 @@ Maîtriser les spécificités Python en capitalisant sur l'expertise existante (
 ## Installation rapide
 
 ```bash
-# 1. Installer UV (Windows PowerShell)
+# 1. Cloner le repo
+git clone https://github.com/nytrimion/training-python.git
+cd training-python
+
+# 2. Installer UV (Windows PowerShell)
 powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
 
-# 2. Synchroniser les dépendances
+# 3. Synchroniser les dépendances
 uv sync
 
-# 3. Vérifier l'installation
+# 4. Vérifier l'installation
 uv run python --version
 ```
 
@@ -47,12 +70,12 @@ training/
 
 ## Modules
 
-| Module | Thèmes |
-|--------|--------|
-| **1. Fondations** | GIL, long-running processes, syntaxe idiomatique |
-| **2. Asyncio** | Event loop, async/await, FastAPI, WebSockets |
-| **3. Écosystème** | Celery, SQLAlchemy, pytest |
-| **4. Intégration** | Projet EventDispatcher DDD |
+| Module             | Thèmes                                           | Statut |
+|--------------------|--------------------------------------------------|--------|
+| **1. Fondations**  | GIL, long-running processes, syntaxe idiomatique | ✅      |
+| **2. Asyncio**     | Event loop, async/await, FastAPI, WebSockets     | ⬜      |
+| **3. Écosystème**  | Celery, SQLAlchemy, pytest                       | ⬜      |
+| **4. Intégration** | Projet EventDispatcher DDD                       | ⬜      |
 
 ## Commandes utiles
 
@@ -72,6 +95,10 @@ uv run mypy src/
 
 ## Documentation
 
-- [Vue d'ensemble](docs/00_overview.md)
+- [Vue d'ensemble et progression](docs/00_overview.md)
 - [Guide d'installation](docs/01_setup.md)
 - [Comparaison PHP/Python](docs/references/php_python_comparison.md)
+
+## Licence
+
+Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus de détails.
