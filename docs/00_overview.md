@@ -28,11 +28,11 @@ Transition de développeur senior PHP vers Python, en capitalisant sur l'experti
 
 | Objectif | Statut |
 |----------|--------|
-| Comprendre l'event loop asyncio | ⬜ |
-| Maîtriser async/await et les Tasks | ⬜ |
-| Utiliser asyncio.gather() et create_task() | ⬜ |
-| Implémenter des endpoints FastAPI async | ⬜ |
-| Créer un WebSocket simple | ⬜ |
+| Comprendre l'event loop asyncio | ✅ |
+| Maîtriser async/await et les Tasks | ✅ |
+| Utiliser asyncio.gather() et create_task() | ✅ |
+| Implémenter des endpoints FastAPI async | ✅ |
+| Créer un WebSocket simple | ✅ |
 
 → [Accéder au module](./modules/module_02_asyncio/README.md)
 
@@ -74,11 +74,11 @@ Transition de développeur senior PHP vers Python, en capitalisant sur l'experti
 
 ```
 Module 1 : Fondations     [✅✅✅✅✅] 100% ✓
-Module 2 : Asyncio        [⬜⬜⬜⬜⬜] 0%
+Module 2 : Asyncio        [✅✅✅✅✅] 100% ✓
 Module 3 : Écosystème     [⬜⬜⬜⬜⬜] 0%
 Module 4 : Intégration    [⬜⬜⬜⬜⬜] 0%
 ─────────────────────────────────────
-Total                     [✅⬜⬜⬜⬜] 25%
+Total                     [✅✅⬜⬜⬜] 50%
 ```
 
 ---
