@@ -29,6 +29,7 @@ expertise existante (DDD, Clean Architecture, SOLID, CQRS).
 
 - Python 3.12+
 - [UV](https://docs.astral.sh/uv/) (gestionnaire de packages moderne)
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) (pour PostgreSQL et Redis)
 
 ## Installation rapide
 
@@ -73,7 +74,7 @@ training/
 | Module             | Thèmes                                           | Statut |
 |--------------------|--------------------------------------------------|--------|
 | **1. Fondations**  | GIL, long-running processes, syntaxe idiomatique | ✅      |
-| **2. Asyncio**     | Event loop, async/await, FastAPI, WebSockets     | ⬜      |
+| **2. Asyncio**     | Event loop, async/await, FastAPI, WebSockets     | ✅      |
 | **3. Écosystème**  | Celery, SQLAlchemy, pytest                       | ⬜      |
 | **4. Intégration** | Projet EventDispatcher DDD                       | ⬜      |
 
@@ -91,6 +92,51 @@ uv run ruff format src/ tests/
 
 # Vérifier les types
 uv run mypy src/
+```
+
+## Docker
+
+Les modules 3 et 4 nécessitent PostgreSQL et Redis. Ces services sont fournis via Docker Compose.
+
+### Services disponibles
+
+| Service    | Container           | Port  | URL de connexion                                         |
+|------------|---------------------|-------|----------------------------------------------------------|
+| PostgreSQL | `training_postgres` | 5432  | `postgresql://training:training@localhost:5432/training` |
+| Redis      | `training_redis`    | 6379  | `redis://localhost:6379/0`                               |
+
+### Commandes Docker
+
+```bash
+# Démarrer les services en arrière-plan
+docker-compose up -d
+
+# Voir l'état des services
+docker-compose ps
+
+# Voir les logs (suivre en temps réel)
+docker-compose logs -f
+
+# Logs d'un service spécifique
+docker-compose logs -f postgres
+
+# Arrêter les services (conserve les données)
+docker-compose stop
+
+# Arrêter et supprimer les conteneurs
+docker-compose down
+
+# Tout supprimer (conteneurs + volumes/données)
+docker-compose down -v
+
+# Redémarrer un service
+docker-compose restart postgres
+
+# Accéder au shell PostgreSQL
+docker exec -it training_postgres psql -U training
+
+# Accéder au CLI Redis
+docker exec -it training_redis redis-cli
 ```
 
 ## Documentation
