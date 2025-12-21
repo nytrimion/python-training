@@ -46,7 +46,7 @@ Transition de développeur senior PHP vers Python, en capitalisant sur l'experti
 | Écrire des tests avec pytest | ✅ |
 | Utiliser fixtures et mocking | ✅ |
 | Modéliser avec SQLAlchemy ORM | ✅ |
-| Gérer les migrations avec Alembic | ⬜ |
+| Gérer les migrations avec Alembic | ✅ |
 | Configurer Celery avec Redis | ⬜ |
 | Implémenter des tasks avec retry | ⬜ |
 
@@ -75,10 +75,10 @@ Transition de développeur senior PHP vers Python, en capitalisant sur l'experti
 ```
 Module 1 : Fondations     [✅✅✅✅✅] 100% ✓
 Module 2 : Asyncio        [✅✅✅✅✅] 100% ✓
-Module 3 : Écosystème     [✅✅✅⬜⬜] 50%
+Module 3 : Écosystème     [✅✅✅✅⬜] 66%
 Module 4 : Intégration    [⬜⬜⬜⬜⬜] 0%
 ─────────────────────────────────────
-Total                     [✅✅✅⬜⬜] 62%
+Total                     [✅✅✅⬜⬜] 66%
 ```
 
 ---
