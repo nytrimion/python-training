@@ -6,21 +6,51 @@ This demonstrates:
 - Function-scoped session with rollback (isolation)
 - Factory fixtures for creating test entities
 """
-
+import os
 import uuid
+import logging
 from collections.abc import Generator
 from typing import Protocol
 
+import alembic.command
 import pytest
-from sqlalchemy import Engine, create_engine
+from alembic.config import Config
+from sqlalchemy import Engine, create_engine, text
 from sqlalchemy.orm import Session
 
 from src.module_03_ecosysteme.exercice_02_sqlalchemy.models import Base, User, Post, Comment
+
+logger = logging.getLogger(__name__)
 
 
 def _generate_unique_email() -> str:
     """Generate a unique email for testing (internal helper)."""
     return f"user-{uuid.uuid4().hex[:8]}@test.com"
+
+
+def _setup_tables_via_migrations(engine: Engine) -> None:
+    """
+    Create all via migrations (more realistic).
+
+    Drop them first for clean state.
+    """
+    logger.info("Setting up tables via Alembic migrations")
+    with engine.connect() as connection:
+        connection.execute(text("DROP SCHEMA public CASCADE"))
+        connection.execute(text("CREATE SCHEMA public"))
+        connection.commit()
+    alembic.command.upgrade(Config("alembic.ini"), "head")
+
+
+def _setup_tables_via_metadata(engine: Engine) -> None:
+    """
+    Create all via metadata.
+
+    Drop them first for clean state.
+    """
+    logger.info("Setting up tables via SQLAlchemy metadata")
+    Base.metadata.drop_all(engine)
+    Base.metadata.create_all(engine)
 
 
 @pytest.fixture(scope="session")
@@ -38,16 +68,12 @@ def engine() -> Engine:
 
 @pytest.fixture(scope="session")
 def tables(engine: Engine) -> Generator[None, None, None]:
-    """
-    Create all tables before tests, drop them first for clean state.
-
-    This runs once per test session.
-    """
-    # Drop first for robustness (in case previous run crashed)
-    Base.metadata.drop_all(engine)
-    Base.metadata.create_all(engine)
+    """Setup tables once per session."""
+    if os.getenv("TEST_USE_MIGRATIONS", "true").lower() == "true":
+        _setup_tables_via_migrations(engine)
+    else:
+        _setup_tables_via_metadata(engine)
     yield
-    # Don't drop after - allows inspection if needed
 
 
 @pytest.fixture(scope="function")
@@ -59,7 +85,6 @@ def db_session(engine: Engine, tables: None) -> Generator[Session, None, None]:
     """
     connection = engine.connect()
     transaction = connection.begin()
-
     session = Session(bind=connection)
 
     yield session
