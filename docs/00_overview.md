@@ -47,8 +47,8 @@ Transition de développeur senior PHP vers Python, en capitalisant sur l'experti
 | Utiliser fixtures et mocking | ✅ |
 | Modéliser avec SQLAlchemy ORM | ✅ |
 | Gérer les migrations avec Alembic | ✅ |
-| Configurer Celery avec Redis | ⬜ |
-| Implémenter des tasks avec retry | ⬜ |
+| Configurer Celery avec Redis | ✅ |
+| Implémenter des tasks avec retry | ✅ |
 
 → [Accéder au module](./modules/module_03_ecosysteme/README.md)
 
@@ -75,10 +75,10 @@ Transition de développeur senior PHP vers Python, en capitalisant sur l'experti
 ```
 Module 1 : Fondations     [✅✅✅✅✅] 100% ✓
 Module 2 : Asyncio        [✅✅✅✅✅] 100% ✓
-Module 3 : Écosystème     [✅✅✅✅⬜] 66%
+Module 3 : Écosystème     [✅✅✅✅✅] 100% ✓
 Module 4 : Intégration    [⬜⬜⬜⬜⬜] 0%
 ─────────────────────────────────────
-Total                     [✅✅✅⬜⬜] 66%
+Total                     [✅✅✅⬜⬜] 75%
 ```
 
 ---
