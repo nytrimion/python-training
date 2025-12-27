@@ -1,0 +1,48 @@
+from datetime import datetime, timezone
+import uuid
+
+from src.module_04_integration.domain.events import AccountCreatedEvent
+
+
+class TestAccountCreatedEvent:
+    """Test the account creation event."""
+
+    def setup_method(self):
+        self.event = AccountCreatedEvent(
+            account_id="account-id",
+            email="test@example.com",
+        )
+
+    def test_event_id_property_has_uuid_default_value(self):
+        """Test the event id property has random UUID as default value."""
+        assert isinstance(self.event.event_id, uuid.UUID)
+        assert self.event.event_id.version == 7
+
+    def test_occurred_at_property_has_datetime_default_value(self):
+        """Test the occurred at property has UTC datetime as default value."""
+        assert isinstance(self.event.occurred_at, datetime)
+        assert self.event.occurred_at.tzname() == "UTC"
+
+    def test_account_id_property_has_given_value(self):
+        """Test the account id property has the given value."""
+        assert self.event.account_id == "account-id"
+
+    def test_email_property_has_given_value(self):
+        """Test the email property has the given value."""
+        assert self.event.email == "test@example.com"
+
+    def test_to_dict_returns_expected_dict(self):
+        """Test the to_dict method returns the expected dict."""
+        actual = self.event.to_dict()
+
+        assert type(actual["event_id"]) is str
+        event_id = uuid.UUID(actual["event_id"])
+        assert event_id.version == 7
+
+        assert type(actual["occurred_at"]) is str
+        occurred_at = datetime.fromisoformat(actual["occurred_at"])
+        assert "T" in actual["occurred_at"]
+        assert occurred_at.timestamp() == self.event.occurred_at.timestamp()
+
+        assert actual["account_id"] == "account-id"
+        assert actual["email"] == "test@example.com"
