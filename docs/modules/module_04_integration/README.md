@@ -17,30 +17,29 @@ Implémenter un système d'Event Dispatching en Clean Architecture avec **3 impl
 Tu dois implémenter un système où la création d'un compte utilisateur déclenche l'envoi d'un email de vérification.
 
 ```
-[CreateAccountCommand] → [EventDispatcher] → [AccountCreatedHandler]
+[CreateAccountCommand] → [EventDispatcher] → [VerifyAccountEmailHandler]
                               ↑                        ↓
-                        (abstraction)          [Send verification email]
+                        (abstraction)          [Verify account email]
 ```
 
 ### Architecture cible
 
 ```
-src/module_04_integration/projet_event_dispatcher/
+src/module_04_integration/
 ├── domain/
 │   ├── events.py           # DomainEvent, AccountCreatedEvent
 │   └── dispatcher.py       # Interface abstraite EventDispatcher
 │
-├── infrastructure/
-│   ├── sync_dispatcher.py      # Implémentation synchrone
-│   ├── asyncio_dispatcher.py   # Implémentation asyncio
-│   └── celery_dispatcher.py    # Implémentation Celery
-│
 ├── application/
 │   ├── commands.py         # CreateAccountCommand
-│   └── handlers.py         # AccountCreatedHandler
+│   └── handlers.py         # VerifyAccountEmailHandler
 │
-└── api/
-    └── main.py             # FastAPI endpoints
+└── infrastructure/
+    ├── http/                   # Driving adapter (expose l'application)
+    │   └── main.py             # FastAPI endpoints
+    ├── sync_dispatcher.py      # Driven adapters (implémentations)
+    ├── asyncio_dispatcher.py
+    └── celery_dispatcher.py
 ```
 
 ---
@@ -175,7 +174,7 @@ class CreateAccountCommand:
 
 ```python
 # application/handlers.py
-class AccountCreatedHandler:
+class VerifyAccountEmailHandler:
     def __init__(self, mailer: MailerService, db: Database):
         self._mailer = mailer
         self._db = db
