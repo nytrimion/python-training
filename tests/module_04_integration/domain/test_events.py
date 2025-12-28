@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import datetime
 import uuid
 
 from src.module_04_integration.domain.events import AccountCreatedEvent

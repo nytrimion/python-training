@@ -1,0 +1,92 @@
+from dataclasses import dataclass
+from unittest.mock import Mock
+
+from src.module_04_integration.domain.events import DomainEvent
+from src.module_04_integration.infrastructure.sync_event_dispatcher import SyncEventDispatcher
+
+
+@dataclass(kw_only=True)
+class DummyEvent(DomainEvent):
+    """Dummy event for testing."""
+    pass
+
+
+@dataclass(kw_only=True)
+class OtherDummyEvent(DomainEvent):
+    """Other dummy event for testing."""
+    pass
+
+
+class TestSyncEventDispatcher:
+    """Test Synchronous event dispatcher."""
+
+    def setup_method(self):
+        self.dispatcher = SyncEventDispatcher()
+
+    def test_register_should_store_handler_for_event_type(self):
+        """Test registering a single handler for an event type."""
+        handler = Mock()
+
+        self.dispatcher.register(DummyEvent, handler)
+
+        assert handler in self.dispatcher._handlers[DummyEvent]
+
+    def test_register_should_allow_multiple_handlers_for_same_event_type(self):
+        """Test registering multiple handlers for the same event type."""
+        handler1 = Mock()
+        handler2 = Mock()
+
+        self.dispatcher.register(DummyEvent, handler1)
+        self.dispatcher.register(DummyEvent, handler2)
+
+        assert handler1 == self.dispatcher._handlers[DummyEvent][0]
+        assert handler2 == self.dispatcher._handlers[DummyEvent][1]
+
+    def test_register_should_allow_handlers_for_multiple_event_types(self):
+        """Test registering handlers for multiple event types."""
+        handler1 = Mock()
+        handler2 = Mock()
+
+        self.dispatcher.register(DummyEvent, handler1)
+        self.dispatcher.register(OtherDummyEvent, handler2)
+
+        assert handler1 == self.dispatcher._handlers[DummyEvent][0]
+        assert handler2 == self.dispatcher._handlers[OtherDummyEvent][0]
+
+    def test_dispatch_should_call_all_handlers_for_event_type(self):
+        """Test that dispatch calls all registered handlers for an event type."""
+        handler1 = Mock()
+        handler2 = Mock()
+        event = DummyEvent()
+
+        self.dispatcher.register(DummyEvent, handler1)
+        self.dispatcher.register(DummyEvent, handler2)
+        self.dispatcher.dispatch(event)
+
+        handler1.assert_called_once_with(event)
+        handler2.assert_called_once_with(event)
+
+    def test_dispatch_without_handler_should_log_warning(self, mocker):
+        """Test that dispatch logs warning when no handler is registered."""
+        logger = mocker.patch(
+            "src.module_04_integration.infrastructure.sync_event_dispatcher.logger",
+        )
+        event = DummyEvent()
+
+        self.dispatcher.dispatch(event)
+
+        logger.warning.assert_called_once_with("No handler registered for event DummyEvent")
+
+    def test_dispatch_should_continue_when_handler_raises_exception(self):
+        """Test that dispatch continues to next handler when one fails."""
+        handler1 = Mock()
+        handler1.side_effect = Exception("Handler error")
+        handler2 = Mock()
+        event = DummyEvent()
+
+        self.dispatcher.register(DummyEvent, handler1)
+        self.dispatcher.register(DummyEvent, handler2)
+        self.dispatcher.dispatch(event)
+
+        handler1.assert_called_once_with(event)
+        handler2.assert_called_once_with(event)
