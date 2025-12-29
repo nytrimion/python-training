@@ -12,12 +12,19 @@ logger = logging.getLogger(__name__)
 
 
 @dataclass
-class SyncEventDispatcher(EventDispatcher):
-    """Synchronous event dispatcher."""
+class AsyncioEventDispatcher(EventDispatcher):
+    """Asynchronous event dispatcher."""
     _handlers: dict[type[DomainEvent], list[EventHandler]] = field(
         default_factory=dict,
         repr=False,
     )
+
+    async def _safe_call_handler(self, handler: EventHandler, event: DomainEvent) -> None:
+        """Execute handler with error handling."""
+        try:
+            await handler(event)
+        except Exception as e:
+            logger.error(f"Event handler {type(handler).__name__} failed: {e}")
 
     def register(self, event_type: type[DomainEvent], handler: EventHandler) -> None:
         """Register an event type to the given handler."""
@@ -33,7 +40,4 @@ class SyncEventDispatcher(EventDispatcher):
             return
 
         for handler in handlers:
-            try:
-                asyncio.run(handler(event))
-            except Exception as e:
-                logger.error(f"Event handler {type(handler).__name__} failed: {e}")
+            asyncio.create_task(self._safe_call_handler(handler, event))
