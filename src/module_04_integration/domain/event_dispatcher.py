@@ -1,3 +1,4 @@
+import asyncio
 from abc import ABC, abstractmethod
 from typing import Protocol
 
@@ -7,7 +8,7 @@ from src.module_04_integration.domain.events import DomainEvent
 class EventHandler(Protocol):
     """Event handler type."""
 
-    def __call__(self, event: DomainEvent) -> None: ...
+    async def __call__(self, event: DomainEvent) -> None: ...
 
 
 class EventDispatcher(ABC):
