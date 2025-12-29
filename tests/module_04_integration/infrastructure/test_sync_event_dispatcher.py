@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from unittest.mock import Mock
+from unittest.mock import AsyncMock
 
 from src.module_04_integration.domain.events import DomainEvent
 from src.module_04_integration.infrastructure.sync_event_dispatcher import SyncEventDispatcher
@@ -25,7 +25,7 @@ class TestSyncEventDispatcher:
 
     def test_register_should_store_handler_for_event_type(self):
         """Test registering a single handler for an event type."""
-        handler = Mock()
+        handler = AsyncMock()
 
         self.dispatcher.register(DummyEvent, handler)
 
@@ -33,8 +33,8 @@ class TestSyncEventDispatcher:
 
     def test_register_should_allow_multiple_handlers_for_same_event_type(self):
         """Test registering multiple handlers for the same event type."""
-        handler1 = Mock()
-        handler2 = Mock()
+        handler1 = AsyncMock()
+        handler2 = AsyncMock()
 
         self.dispatcher.register(DummyEvent, handler1)
         self.dispatcher.register(DummyEvent, handler2)
@@ -44,8 +44,8 @@ class TestSyncEventDispatcher:
 
     def test_register_should_allow_handlers_for_multiple_event_types(self):
         """Test registering handlers for multiple event types."""
-        handler1 = Mock()
-        handler2 = Mock()
+        handler1 = AsyncMock()
+        handler2 = AsyncMock()
 
         self.dispatcher.register(DummyEvent, handler1)
         self.dispatcher.register(OtherDummyEvent, handler2)
@@ -55,8 +55,8 @@ class TestSyncEventDispatcher:
 
     def test_dispatch_should_call_all_handlers_for_event_type(self):
         """Test that dispatch calls all registered handlers for an event type."""
-        handler1 = Mock()
-        handler2 = Mock()
+        handler1 = AsyncMock()
+        handler2 = AsyncMock()
         event = DummyEvent()
 
         self.dispatcher.register(DummyEvent, handler1)
@@ -79,9 +79,9 @@ class TestSyncEventDispatcher:
 
     def test_dispatch_should_continue_when_handler_raises_exception(self):
         """Test that dispatch continues to next handler when one fails."""
-        handler1 = Mock()
+        handler1 = AsyncMock()
         handler1.side_effect = Exception("Handler error")
-        handler2 = Mock()
+        handler2 = AsyncMock()
         event = DummyEvent()
 
         self.dispatcher.register(DummyEvent, handler1)

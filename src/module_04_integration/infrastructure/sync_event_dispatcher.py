@@ -1,3 +1,4 @@
+import asyncio
 from dataclasses import dataclass, field
 import logging
 
@@ -33,6 +34,6 @@ class SyncEventDispatcher(EventDispatcher):
 
         for handler in handlers:
             try:
-                handler(event)
+                asyncio.run(handler(event))
             except Exception as e:
                 logger.error(f"Event handler {type(handler).__name__} failed to handle {event_type}: {e}")
