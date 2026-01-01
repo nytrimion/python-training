@@ -1,8 +1,10 @@
 from abc import ABC
 from dataclasses import dataclass, field, asdict
 from datetime import datetime, timezone
-from typing import Any
+from typing import Any, Self
 import uuid
+
+from src.module_04_integration.domain.types import JsonDict
 
 
 @dataclass(kw_only=True)
@@ -19,9 +21,19 @@ class DomainEvent(ABC):
             return value.isoformat()
         return value
 
-    def to_dict(self) -> dict[str, Any]:
+    def to_dict(self) -> JsonDict:
         """Serialize event for queue transport."""
         return {k: self._serialize(v) for k, v in asdict(self).items()}
+
+    @classmethod
+    def from_dict(cls, data: JsonDict) -> Self:
+        """Reconstruct event from serialized dict."""
+        transformed = {
+            **data,
+            "event_id": uuid.UUID(data["event_id"]),
+            "occurred_at": datetime.fromisoformat(data["occurred_at"]),
+        }
+        return cls(**transformed)
 
 
 @dataclass(kw_only=True)

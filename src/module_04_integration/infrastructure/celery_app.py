@@ -1,9 +1,3 @@
-"""
-Celery application configuration.
-
-This module creates and configures the Celery app with Redis as broker and backend.
-"""
-
 from celery import Celery
 
 # Create Celery app with Redis
@@ -31,6 +25,3 @@ app.conf.update(
     # Result expiration (1 hour)
     result_expires=3600,
 )
-
-# Auto-discover tasks from the tasks module
-app.autodiscover_tasks(["src.module_04_integration.infrastructure"])

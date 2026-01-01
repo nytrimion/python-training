@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 import uuid
 
 from src.module_04_integration.domain.events import AccountCreatedEvent
@@ -46,3 +46,20 @@ class TestAccountCreatedEvent:
 
         assert actual["account_id"] == "account-id"
         assert actual["email"] == "test@example.com"
+
+    def test_from_dict_returns_expected_event(self):
+        """Test the from_dict method returns the expected event."""
+        event_id = uuid.uuid7()
+        occurred_at = datetime.now(timezone.utc)
+        actual = AccountCreatedEvent.from_dict({
+            "event_id": str(event_id),
+            "occurred_at": occurred_at.isoformat(),
+            "account_id": "account-id",
+            "email": "test@example.com",
+        })
+
+        assert isinstance(actual, AccountCreatedEvent)
+        assert actual.event_id == event_id
+        assert actual.occurred_at == occurred_at
+        assert actual.account_id == "account-id"
+        assert actual.email == "test@example.com"
