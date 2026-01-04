@@ -7,16 +7,17 @@ and asynchronous execution for I/O-bound operations.
 
 import asyncio
 import time
+from typing import Any
 
 
-def simulate_fetch_sync(url: str, delay: float = 0.5) -> dict:
+def simulate_fetch_sync(url: str, delay: float = 0.5) -> dict[str, Any]:
     """Simulate a synchronous HTTP fetch with blocking sleep."""
     print(f"[SYNC] Fetching {url}...")
     time.sleep(delay)
     return {"url": url, "status": 200}
 
 
-async def simulate_fetch_async(url: str, delay: float = 0.5) -> dict:
+async def simulate_fetch_async(url: str, delay: float = 0.5) -> dict[str, Any]:
     """Simulate an asynchronous HTTP fetch with non-blocking sleep."""
     print(f"[ASYNC] Fetching {url}...")
     await asyncio.sleep(delay)
@@ -25,7 +26,8 @@ async def simulate_fetch_async(url: str, delay: float = 0.5) -> dict:
 
 # --- SYNC VERSION (provided) ---
 
-def fetch_all_sync(urls: list[str]) -> list[dict]:
+
+def fetch_all_sync(urls: list[str]) -> list[dict[str, Any]]:
     """Fetch all URLs sequentially (blocking)."""
     results = []
     for url in urls:
@@ -36,12 +38,14 @@ def fetch_all_sync(urls: list[str]) -> list[dict]:
 
 # --- ASYNC VERSION ---
 
-async def fetch_all_async(urls: list[str]) -> list[dict]:
+
+async def fetch_all_async(urls: list[str]) -> list[dict[str, Any]]:
     """Fetch all URLs concurrently (non-blocking)."""
     return await asyncio.gather(*[simulate_fetch_async(url) for url in urls])
 
 
 # --- BENCHMARK ---
+
 
 def benchmark() -> None:
     """Compare execution times of sync vs async approaches."""
@@ -70,7 +74,9 @@ def benchmark() -> None:
     print_header(f"Speedup: {sync_duration / async_duration:.1f}x faster with async")
 
 
-def print_header(label: str, border: str = "=" * 50, with_line_feed: bool = True) -> None:
+def print_header(
+        label: str, border: str = "=" * 50, with_line_feed: bool = True
+) -> None:
     """Print a header with given label."""
     if with_line_feed:
         print()

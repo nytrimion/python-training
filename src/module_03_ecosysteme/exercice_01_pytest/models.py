@@ -18,7 +18,7 @@ class User:
 
     def with_id(self, id: int) -> Self:
         """Return a copy with the given ID."""
-        return User(
+        return type(self)(
             id=id,
             email=self.email,
             name=self.name,

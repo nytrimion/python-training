@@ -1,7 +1,8 @@
 """HTTP log analyzer using idiomatic Python patterns."""
+
 from collections import Counter, defaultdict
-from dataclasses import dataclass
 from collections.abc import Iterable
+from dataclasses import dataclass
 from statistics import mean
 
 
@@ -34,6 +35,7 @@ SAMPLE_LOGS: list[HttpLog] = [
 
 # TODO(human): Implement the following functions using comprehensions
 
+
 def get_failed_requests(logs: Iterable[HttpLog]) -> list[HttpLog]:
     """Return all requests with status code >= 400.
 
@@ -45,10 +47,10 @@ def get_failed_requests(logs: Iterable[HttpLog]) -> list[HttpLog]:
 def get_average_response_time(logs: Iterable[HttpLog]) -> float:
     """Calculate average response time in milliseconds.
 
-    Use a generator expression with sum() and count.
-    Hint: You'll need to convert to list first to get both sum and
-count,
-    or iterate twice, or use a different approach.
+        Use a generator expression with sum() and count.
+        Hint: You'll need to convert to list first to get both sum and
+    count,
+        or iterate twice, or use a different approach.
     """
     return mean(log.response_time_ms for log in logs)
 

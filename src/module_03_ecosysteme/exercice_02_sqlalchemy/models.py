@@ -7,7 +7,7 @@ Models:
 - Comment: Comments on posts, also written by users
 """
 
-from datetime import datetime, UTC
+from datetime import UTC, datetime
 
 from sqlalchemy import ForeignKey, String, Text
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
@@ -15,6 +15,7 @@ from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
 class Base(DeclarativeBase):
     """Base class for all models."""
+
     pass
 
 

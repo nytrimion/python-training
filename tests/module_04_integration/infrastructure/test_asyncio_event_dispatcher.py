@@ -5,19 +5,27 @@ from unittest.mock import AsyncMock
 import pytest
 
 from src.module_04_integration.domain.events import DomainEvent
-from src.module_04_integration.infrastructure.asyncio_event_dispatcher import AsyncioEventDispatcher
+from src.module_04_integration.infrastructure.asyncio_event_dispatcher import (
+    AsyncioEventDispatcher,
+)
 
 
 @dataclass(kw_only=True)
 class DummyEvent(DomainEvent):
     """Dummy event for testing."""
-    pass
+
+    @property
+    def event_type(self) -> str:
+        return "dummy.event"
 
 
 @dataclass(kw_only=True)
 class OtherDummyEvent(DomainEvent):
     """Other dummy event for testing."""
-    pass
+
+    @property
+    def event_type(self) -> str:
+        return "other.dummy.event"
 
 
 class TestAsyncioEventDispatcher:
@@ -80,7 +88,9 @@ class TestAsyncioEventDispatcher:
 
         self.dispatcher.dispatch(event)
 
-        logger.warning.assert_called_once_with("No handler registered for event DummyEvent")
+        logger.warning.assert_called_once_with(
+            "No handler registered for event DummyEvent"
+        )
 
     @pytest.mark.asyncio
     async def test_dispatch_should_continue_when_handler_raises_exception(self):

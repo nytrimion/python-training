@@ -6,9 +6,10 @@ This demonstrates:
 - Function-scoped session with rollback (isolation)
 - Factory fixtures for creating test entities
 """
+
+import logging
 import os
 import uuid
-import logging
 from collections.abc import Generator
 from typing import Protocol
 
@@ -18,7 +19,12 @@ from alembic.config import Config
 from sqlalchemy import Engine, create_engine, text
 from sqlalchemy.orm import Session
 
-from src.module_03_ecosysteme.exercice_02_sqlalchemy.models import Base, User, Post, Comment
+from src.module_03_ecosysteme.exercice_02_sqlalchemy.models import (
+    Base,
+    Comment,
+    Post,
+    User,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -67,7 +73,7 @@ def engine() -> Engine:
 
 
 @pytest.fixture(scope="session")
-def tables(engine: Engine) -> Generator[None, None, None]:
+def _tables(engine: Engine) -> Generator[None, None, None]:
     """Setup tables once per session."""
     if os.getenv("TEST_USE_MIGRATIONS", "true").lower() == "true":
         _setup_tables_via_migrations(engine)
@@ -77,7 +83,7 @@ def tables(engine: Engine) -> Generator[None, None, None]:
 
 
 @pytest.fixture(scope="function")
-def db_session(engine: Engine, tables: None) -> Generator[Session, None, None]:
+def db_session(engine: Engine, _tables: None) -> Generator[Session, None, None]:
     """
     Create a new session for each test with automatic rollback.
 

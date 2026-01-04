@@ -7,9 +7,13 @@ This module demonstrates:
 - Simulated email sending (would be real SMTP in production)
 """
 
+from __future__ import annotations
 import logging
 import random
 from datetime import datetime
+from typing import Any
+
+from celery import Task
 
 from .celery_app import app
 
@@ -18,15 +22,17 @@ logger = logging.getLogger(__name__)
 
 class EmailError(Exception):
     """Raised when email sending fails (temporary error, can retry)."""
+
     pass
 
 
 class PermanentEmailError(Exception):
     """Raised when email sending fails permanently (don't retry)."""
+
     pass
 
 
-def _simulate_email_send(to: str, subject: str, body: str) -> str:
+def _simulate_email_send(to: str, _subject: str, _body: str) -> str:
     """
     Simulate email sending with random failures for testing.
 
@@ -51,17 +57,24 @@ def _simulate_email_send(to: str, subject: str, body: str) -> str:
         raise PermanentEmailError("Invalid email address format")
 
     # Success
-    message_id = f"msg_{datetime.now().strftime('%Y%m%d%H%M%S')}_{random.randint(1000, 9999)}"
+    message_id = (
+        f"msg_{datetime.now().strftime('%Y%m%d%H%M%S')}_{random.randint(1000, 9999)}"
+    )
     logger.info(f"Email sent to {to}, message_id={message_id}")
     return message_id
 
 
 @app.task(bind=True, max_retries=3, default_retry_delay=10)
-def send_confirmation_email(self, email: str, order_id: str) -> dict:
+def send_confirmation_email(
+        self: Task[Any],  # type: ignore[type-arg]
+        email: str,
+        order_id: str,
+) -> dict[str, Any]:
     """
     Send order confirmation email with retry on temporary failures.
 
     Args:
+        self: Celery task
         email: Recipient email address
         order_id: Order ID for the confirmation
 
@@ -82,7 +95,7 @@ def send_confirmation_email(self, email: str, order_id: str) -> dict:
             "to": email,
         }
     except EmailError as exc:
-        raise self.retry(exc=exc, countdown=10 * (2 ** retries))
+        raise self.retry(exc=exc, countdown=10 * (2 ** retries)) from exc
     except PermanentEmailError as exc:
         return {
             "status": "failed",

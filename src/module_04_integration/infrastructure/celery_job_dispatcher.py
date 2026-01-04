@@ -1,5 +1,5 @@
-from dataclasses import dataclass, field
 import logging
+from dataclasses import dataclass, field
 
 from celery import Celery
 
@@ -16,6 +16,7 @@ logger = logging.getLogger(__name__)
 @dataclass
 class CeleryJobDispatcher(JobDispatcher):
     """Celery job dispatcher."""
+
     _celery_app: Celery = field(default=app)
     _task_names: dict[str, str] = field(default_factory=dict, repr=False)
 

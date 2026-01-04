@@ -16,11 +16,13 @@ router = APIRouter()
 
 class AccountCreationRequest(BaseModel):
     """Account creation request."""
+
     email: str
 
 
 class AccountCreationResponse(BaseModel):
     """Account creation response."""
+
     account_id: str
     status: str
     message: str
@@ -39,7 +41,7 @@ async def create_account(
     The account verification email is sent asynchronously by a job worker.
     The tracking of the new account is handled by event.
     """
-    account_id = str(uuid.uuid7())
+    account_id = str(uuid.uuid7())  # type: ignore[attr-defined]
     created_event = AccountCreatedEvent(
         account_id=account_id,
         email=request.email,

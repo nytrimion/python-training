@@ -5,7 +5,7 @@ from src.module_04_integration.infrastructure.celery_app import app as celery_ap
 
 
 @pytest.fixture
-def celery_eager_mode():
+def _celery_eager_mode():
     """Configure Celery to run tasks synchronously."""
     # Store original settings
     original_eager = celery_app.conf.task_always_eager

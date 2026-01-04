@@ -16,7 +16,11 @@ class EventDispatcher(ABC):
     """Abstract interface for event dispatching."""
 
     @abstractmethod
-    def register(self, event_type: type[DomainEvent], handler: EventHandler) -> None:
+    def register(
+            self,
+            event_type: type[DomainEvent],
+            handler: EventHandler[DomainEvent],
+    ) -> None:
         """Register an event type to the given handler."""
         pass
 

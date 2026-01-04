@@ -14,6 +14,7 @@ class Payload(Protocol):
 @dataclass(kw_only=True, frozen=True)
 class Job:
     """Job."""
+
     name: str
     id: str
     payload: JsonDict = field(default_factory=dict)

@@ -9,6 +9,7 @@ This module demonstrates:
 import asyncio
 import time
 from datetime import datetime
+from typing import Any
 
 from fastapi import BackgroundTasks, FastAPI
 from pydantic import BaseModel
@@ -17,6 +18,7 @@ app = FastAPI(title="Async Demo API")
 
 
 # --- Models ---
+
 
 class OrderCreate(BaseModel):
     """Request model for creating an order."""
@@ -35,6 +37,7 @@ class OrderResponse(BaseModel):
 
 
 # --- Simulated services ---
+
 
 async def save_order_to_db(order: OrderCreate) -> str:
     """Simulate saving an order to database (async I/O)."""
@@ -65,6 +68,7 @@ def log_order_analytics(order_id: str, product: str, quantity: int) -> None:
 
 
 # --- Endpoints ---
+
 
 @app.post("/orders/sync", response_model=OrderResponse)
 def create_order_sync(order: OrderCreate) -> OrderResponse:
@@ -134,7 +138,9 @@ async def create_order_async(
     background_tasks.add_task(send_confirmation_email, order.customer_email, order_id)
 
     # Log analytics (non-blocking)
-    background_tasks.add_task(log_order_analytics, order_id, order.product, order.quantity)
+    background_tasks.add_task(
+        log_order_analytics, order_id, order.product, order.quantity
+    )
 
     print(f"[ASYNC] Response sent at {datetime.now():%H:%M:%S}")
     return OrderResponse(
@@ -146,7 +152,8 @@ async def create_order_async(
 
 # --- Health check ---
 
+
 @app.get("/health")
-async def health_check() -> dict:
+async def health_check() -> dict[str, Any]:
     """Simple health check endpoint."""
     return {"status": "healthy", "timestamp": datetime.now().isoformat()}

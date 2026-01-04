@@ -1,5 +1,5 @@
-from datetime import datetime, timezone
 import uuid
+from datetime import UTC, datetime
 
 from src.module_04_integration.domain.events import AccountCreatedEvent
 
@@ -12,6 +12,10 @@ class TestAccountCreatedEvent:
             account_id="account-id",
             email="test@example.com",
         )
+
+    def test_event_type_property_has_expected_value(self):
+        """Test the event type property has the expected value."""
+        assert self.event.event_type == "account.created"
 
     def test_event_id_property_has_uuid_default_value(self):
         """Test the event id property has random UUID as default value."""
@@ -50,13 +54,15 @@ class TestAccountCreatedEvent:
     def test_from_dict_returns_expected_event(self):
         """Test the from_dict method returns the expected event."""
         event_id = uuid.uuid7()
-        occurred_at = datetime.now(timezone.utc)
-        actual = AccountCreatedEvent.from_dict({
-            "event_id": str(event_id),
-            "occurred_at": occurred_at.isoformat(),
-            "account_id": "account-id",
-            "email": "test@example.com",
-        })
+        occurred_at = datetime.now(UTC)
+        actual = AccountCreatedEvent.from_dict(
+            {
+                "event_id": str(event_id),
+                "occurred_at": occurred_at.isoformat(),
+                "account_id": "account-id",
+                "email": "test@example.com",
+            }
+        )
 
         assert isinstance(actual, AccountCreatedEvent)
         assert actual.event_id == event_id

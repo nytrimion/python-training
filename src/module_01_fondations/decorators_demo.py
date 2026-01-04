@@ -1,10 +1,10 @@
 """Decorators demonstration."""
 
 import time
-from collections.abc import Generator
+from collections.abc import Callable, Generator
 from contextlib import contextmanager
 from functools import wraps
-from typing import Callable, Any
+from typing import Any
 
 
 # Benchmark decorator
@@ -12,7 +12,7 @@ def timer(func: Callable[..., Any]) -> Callable[..., Any]:
     """Decorator that measures and prints execution time."""
 
     @wraps(func)
-    def inner(*args, **kwargs) -> Any:
+    def inner(*args: Any, **kwargs: Any) -> Any:
         start = time.perf_counter()
         value = func(*args, **kwargs)
         print(f"[timer] {func.__name__} took {time.perf_counter() - start:.2f}s")
@@ -22,7 +22,9 @@ def timer(func: Callable[..., Any]) -> Callable[..., Any]:
 
 
 # Retry pattern
-def retry(attempts: int, delay: float = 0.5) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
+def retry(
+        attempts: int, delay: float = 0.5
+) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
     if attempts < 1:
         raise ValueError("[retry] attempts must be >= 1")
     if delay < 0:
@@ -30,14 +32,16 @@ def retry(attempts: int, delay: float = 0.5) -> Callable[[Callable[..., Any]], C
 
     def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
         @wraps(func)
-        def inner(*args, **kwargs) -> Any:
+        def inner(*args: Any, **kwargs: Any) -> Any:
             for attempt in range(1, attempts + 1):
                 try:
                     return func(*args, **kwargs)
                 except Exception as e:
                     if attempt >= attempts:
                         raise e
-                    print(f"[retry] {func.__name__} failed, attempt {attempt}/{attempts}")
+                    print(
+                        f"[retry] {func.__name__} failed, attempt {attempt}/{attempts}"
+                    )
                     time.sleep(delay)
             raise RuntimeError("[retry] Unreachable: attempts validation failed")
 
@@ -75,6 +79,7 @@ def compute_sum(n: int) -> int:
 def unreliable_api_call() -> str:
     """Simulate an API that fails randomly."""
     import random
+
     if random.random() < 0.7:  # 70% chance of failure
         raise ConnectionError("API unavailable")
     return "success"

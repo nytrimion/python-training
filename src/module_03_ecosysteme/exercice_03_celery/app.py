@@ -8,6 +8,7 @@ replacing BackgroundTasks with Celery for robust email sending.
 import asyncio
 import logging
 from datetime import datetime
+from typing import Any
 
 from fastapi import FastAPI
 from pydantic import BaseModel
@@ -37,7 +38,7 @@ class OrderResponse(BaseModel):
     email_task_id: str | None = None
 
 
-async def save_order_to_db(order: OrderCreate) -> str:
+async def save_order_to_db(_order: OrderCreate) -> str:
     """Simulate saving order to database."""
     await asyncio.sleep(0.1)  # Simulate DB latency
     order_id = f"ORD-{datetime.now().strftime('%Y%m%d%H%M%S')}"
@@ -65,7 +66,7 @@ async def create_order(order: OrderCreate) -> OrderResponse:
 
 
 @app.get("/tasks/{task_id}")
-async def get_task_status(task_id: str) -> dict:
+async def get_task_status(task_id: str) -> dict[str, Any]:
     """
     Check the status of a Celery task.
 
@@ -82,7 +83,7 @@ async def get_task_status(task_id: str) -> dict:
 
     if result.ready():
         if result.successful():
-            response["result"] = result.result
+            response["result"] = result.result  # type: ignore[assignment]
         else:
             response["error"] = str(result.result)
 
