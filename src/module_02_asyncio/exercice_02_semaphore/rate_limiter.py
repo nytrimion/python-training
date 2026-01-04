@@ -8,9 +8,10 @@ using asyncio.Semaphore to avoid overwhelming external services.
 import asyncio
 import random
 import time
+from typing import Any
 
 
-async def fetch_url(url: str, delay: float = 0.3) -> dict:
+async def fetch_url(url: str, delay: float = 0.3) -> dict[str, Any]:
     """Simulate fetching a URL with variable delay."""
     actual_delay = delay + random.uniform(0, 0.2)  # 0.3 à 0.5s
     print(f"  -> Starting: {url}")
@@ -34,7 +35,10 @@ async def fetch_url(url: str, delay: float = 0.3) -> dict:
 # - Total time should be ~ceil(10/3) * 0.3s = ~1.2s (not 0.3s or 3s)
 
 
-async def fetch_with_limit(urls: list[str], max_concurrent: int = 3) -> list[dict]:
+async def fetch_with_limit(
+        urls: list[str],
+        max_concurrent: int = 3,
+) -> list[dict[str, Any]]:
     """
     Fetch all URLs with a maximum number of concurrent requests.
 
@@ -47,7 +51,7 @@ async def fetch_with_limit(urls: list[str], max_concurrent: int = 3) -> list[dic
     """
     semaphore = asyncio.Semaphore(max_concurrent)
 
-    async def fetch_one(url: str) -> dict:
+    async def fetch_one(url: str) -> dict[str, Any]:
         async with semaphore:
             return await fetch_url(url)
 
@@ -76,7 +80,9 @@ async def demo() -> None:
     )
 
 
-def print_header(*labels: str, border: str = "=" * 60, with_line_feed: bool = True) -> None:
+def print_header(
+        *labels: str, border: str = "=" * 60, with_line_feed: bool = True
+) -> None:
     """Print a header with given label."""
     if with_line_feed:
         print()

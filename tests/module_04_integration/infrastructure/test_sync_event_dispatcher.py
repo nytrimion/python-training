@@ -2,19 +2,27 @@ from dataclasses import dataclass
 from unittest.mock import AsyncMock
 
 from src.module_04_integration.domain.events import DomainEvent
-from src.module_04_integration.infrastructure.sync_event_dispatcher import SyncEventDispatcher
+from src.module_04_integration.infrastructure.sync_event_dispatcher import (
+    SyncEventDispatcher,
+)
 
 
 @dataclass(kw_only=True)
 class DummyEvent(DomainEvent):
     """Dummy event for testing."""
-    pass
+
+    @property
+    def event_type(self) -> str:
+        return "dummy.event"
 
 
 @dataclass(kw_only=True)
 class OtherDummyEvent(DomainEvent):
     """Other dummy event for testing."""
-    pass
+
+    @property
+    def event_type(self) -> str:
+        return "other.dummy.event"
 
 
 class TestSyncEventDispatcher:
@@ -75,7 +83,9 @@ class TestSyncEventDispatcher:
 
         self.dispatcher.dispatch(event)
 
-        logger.warning.assert_called_once_with("No handler registered for event DummyEvent")
+        logger.warning.assert_called_once_with(
+            "No handler registered for event DummyEvent"
+        )
 
     def test_dispatch_should_continue_when_handler_raises_exception(self):
         """Test that dispatch continues to next handler when one fails."""

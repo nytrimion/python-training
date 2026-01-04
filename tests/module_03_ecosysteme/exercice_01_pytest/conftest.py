@@ -5,12 +5,13 @@ This file is automatically discovered by pytest.
 Fixtures defined here are available to all tests in this directory.
 """
 
-import pytest
 from unittest.mock import Mock
 
+import pytest
+
 from src.module_03_ecosysteme.exercice_01_pytest.notifications import (
-    NotificationService,
     NotificationResult,
+    NotificationService,
 )
 from src.module_03_ecosysteme.exercice_01_pytest.user_service import UserService
 

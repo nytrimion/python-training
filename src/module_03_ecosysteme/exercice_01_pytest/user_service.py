@@ -51,6 +51,7 @@ class UserService:
             raise UserValidationError(f"Email already registered: {email}")
 
         user = User(email=email, name=name).with_id(self._next_id)
+        assert user.id is not None
         self._users[user.id] = user
         self._next_id += 1
 

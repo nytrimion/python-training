@@ -10,12 +10,12 @@ This demonstrates:
 import pytest
 from fastapi.testclient import TestClient
 
-from src.module_03_ecosysteme.exercice_03_celery.celery_app import app as celery_app
 from src.module_03_ecosysteme.exercice_03_celery.app import app as fastapi_app
+from src.module_03_ecosysteme.exercice_03_celery.celery_app import app as celery_app
 
 
 @pytest.fixture
-def celery_eager_mode():
+def _celery_eager_mode():
     """
     Configure Celery to run tasks synchronously.
 

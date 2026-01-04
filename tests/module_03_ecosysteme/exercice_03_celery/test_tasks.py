@@ -7,14 +7,16 @@ This demonstrates:
 - Mocking for testing calling code
 - Retry behavior testing
 """
+
+from unittest.mock import ANY, MagicMock
+
 import pytest
 from celery.exceptions import Retry
-from unittest.mock import MagicMock, ANY
 
 from src.module_03_ecosysteme.exercice_03_celery.tasks import (
-    send_confirmation_email,
     EmailError,
     PermanentEmailError,
+    send_confirmation_email,
 )
 
 
@@ -26,7 +28,7 @@ class TestEagerMode:
     allowing full integration tests without a worker.
     """
 
-    def test_send_email_success_eager_mode(self, celery_eager_mode, mocker) -> None:
+    def test_send_email_success_eager_mode(self, _celery_eager_mode, mocker) -> None:
         """Test task execution through .delay() with eager mode."""
         mocker.patch(
             "src.module_03_ecosysteme.exercice_03_celery.tasks._simulate_email_send",
@@ -88,11 +90,14 @@ class TestMocking:
             return_value=mock_task,
         )
 
-        response = client.post("/orders", json={
-            "product": "",
-            "quantity": 3,
-            "customer_email": "test@example.com",
-        })
+        response = client.post(
+            "/orders",
+            json={
+                "product": "",
+                "quantity": 3,
+                "customer_email": "test@example.com",
+            },
+        )
 
         assert response.json()["email_task_id"] == "mock-task-id"
         assert mock_delay.called
@@ -109,7 +114,7 @@ class TestRetryBehavior:
 
     def test_send_email_retries_on_transient_error(
             self,
-            celery_eager_mode,
+            _celery_eager_mode,
             mocker,
     ) -> None:
         """Test that EmailError triggers a retry."""

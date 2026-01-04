@@ -101,5 +101,9 @@ if __name__ == "__main__":
     for batch in range(1, 6):
         simulate_requests(count=10_000, payload_size=1000)
         print(f"\nAfter batch {batch}:")
-        print(f"- Leaky logger: {leaky_logger.log_count:,} logs, ~{leaky_logger.memory_usage: .1f}MB")
-        print(f"- Bounded logger: {bounded_logger.log_count:,} logs, ~{bounded_logger.memory_usage: .1f}MB")
+        print(
+            f"- Leaky logger: {leaky_logger.log_count:,} logs, ~{leaky_logger.memory_usage: .1f}MB"
+        )
+        print(
+            f"- Bounded logger: {bounded_logger.log_count:,} logs, ~{bounded_logger.memory_usage: .1f}MB"
+        )

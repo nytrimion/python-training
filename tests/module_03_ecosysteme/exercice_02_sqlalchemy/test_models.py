@@ -9,7 +9,7 @@ This demonstrates:
 
 from sqlalchemy.orm import Session
 
-from src.module_03_ecosysteme.exercice_02_sqlalchemy.models import User, Post, Comment
+from src.module_03_ecosysteme.exercice_02_sqlalchemy.models import Comment, Post, User
 
 
 class TestUser:
@@ -107,10 +107,10 @@ class TestComment:
     """Tests for Comment model."""
 
     def test_create_comment(
-            self,
-            db_session: Session,
-            user_factory,
-            post_factory,
+        self,
+        db_session: Session,
+        user_factory,
+        post_factory,
     ) -> None:
         """Test comment creation with post and author."""
         author = user_factory(name="Alice")
@@ -130,10 +130,10 @@ class TestComment:
         assert comment.author_id == commenter.id
 
     def test_post_comments_relationship(
-            self,
-            db_session: Session,
-            user_factory,
-            post_factory,
+        self,
+        db_session: Session,
+        user_factory,
+        post_factory,
     ) -> None:
         """Test that post.comments returns all comments on that post."""
         post = post_factory(author=user_factory(), title="Post")
@@ -165,10 +165,10 @@ class TestCascadeDelete:
     """Tests for cascade delete behavior."""
 
     def test_delete_user_deletes_posts(
-            self,
-            db_session: Session,
-            user_factory,
-            post_factory,
+        self,
+        db_session: Session,
+        user_factory,
+        post_factory,
     ) -> None:
         """Test that deleting a user also deletes their posts."""
         author = user_factory(name="Alice")
@@ -187,11 +187,11 @@ class TestCascadeDelete:
         assert db_session.get(Post, post2_id) is None
 
     def test_delete_post_deletes_comments(
-            self,
-            db_session: Session,
-            user_factory,
-            post_factory,
-            comment_factory,
+        self,
+        db_session: Session,
+        user_factory,
+        post_factory,
+        comment_factory,
     ) -> None:
         """Test that deleting a post also deletes its comments."""
         post = post_factory(author=user_factory())

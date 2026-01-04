@@ -124,10 +124,10 @@ if __name__ == "__main__":
     print("=" * 50)
     print("SUMMARY")
     print("=" * 50)
-    print(f"CPU-bound: "
-          f"sequential={seq_time:.2f}s, "
-          f"threaded={thread_time:.2f}s, "
-          f"multiprocess={multiprocess_time:.2f}s")
-    print(f"I/O-bound: "
-          f"sequential={io_seq_time:.2f}s, "
-          f"threaded={io_thread_time:.2f}s")
+    print(
+        f"CPU-bound: "
+        f"sequential={seq_time:.2f}s, "
+        f"threaded={thread_time:.2f}s, "
+        f"multiprocess={multiprocess_time:.2f}s"
+    )
+    print(f"I/O-bound: sequential={io_seq_time:.2f}s, threaded={io_thread_time:.2f}s")

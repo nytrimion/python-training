@@ -7,6 +7,7 @@ from dataclasses import dataclass
 @dataclass
 class LogEntry:
     """Parsed log entry."""
+
     timestamp: str
     level: str
     message: str
@@ -43,8 +44,7 @@ def parse_logs(lines: Iterable[str]) -> Generator[LogEntry, None, None]:
 
 
 def filter_by_level(
-        entries: Iterable[LogEntry],
-        levels: set[str]
+    entries: Iterable[LogEntry], levels: set[str]
 ) -> Generator[LogEntry, None, None]:
     """Filter log entries by level.
 
@@ -78,14 +78,12 @@ if __name__ == "__main__":
     print("\n=== Memory efficiency demo ===")
     print("Processing 'infinite' data stream...")
 
-
     # This generator could yield forever - but we only take 5
     def infinite_numbers() -> Generator[int, None, None]:
         n = 0
         while True:
             yield n
             n += 1
-
 
     # Take only first 5 - no infinite loop!
     from itertools import islice

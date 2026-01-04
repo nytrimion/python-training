@@ -1,12 +1,12 @@
 import asyncio
-from dataclasses import dataclass, field
 import logging
+from dataclasses import dataclass, field
 
-from src.module_04_integration.domain.events import DomainEvent
 from src.module_04_integration.domain.event_dispatcher import (
     EventDispatcher,
     EventHandler,
 )
+from src.module_04_integration.domain.events import DomainEvent
 
 logger = logging.getLogger(__name__)
 
@@ -14,19 +14,28 @@ logger = logging.getLogger(__name__)
 @dataclass
 class AsyncioEventDispatcher(EventDispatcher):
     """Asynchronous event dispatcher."""
-    _handlers: dict[type[DomainEvent], list[EventHandler]] = field(
+
+    _handlers: dict[type[DomainEvent], list[EventHandler[DomainEvent]]] = field(
         default_factory=dict,
         repr=False,
     )
 
-    async def _safe_call_handler(self, handler: EventHandler, event: DomainEvent) -> None:
+    async def _safe_call_handler(
+            self,
+            handler: EventHandler[DomainEvent],
+            event: DomainEvent,
+    ) -> None:
         """Execute handler with error handling."""
         try:
             await handler(event)
         except Exception as e:
             logger.error(f"Event handler {type(handler).__name__} failed: {e}")
 
-    def register(self, event_type: type[DomainEvent], handler: EventHandler) -> None:
+    def register(
+            self,
+            event_type: type[DomainEvent],
+            handler: EventHandler[DomainEvent],
+    ) -> None:
         """Register an event type to the given handler."""
         self._handlers.setdefault(event_type, []).append(handler)
 

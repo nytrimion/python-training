@@ -7,8 +7,9 @@ This file demonstrates:
 - Testing exceptions with pytest.raises
 """
 
-import pytest
 from unittest.mock import Mock
+
+import pytest
 
 from src.module_03_ecosysteme.exercice_01_pytest.notifications import NotificationResult
 from src.module_03_ecosysteme.exercice_01_pytest.user_service import (
@@ -37,7 +38,9 @@ class TestCreateUser:
         """Test that duplicate email raises UserValidationError."""
         user_service.create_user("alice@example.com", "Foo")
 
-        with pytest.raises(UserValidationError, match="Email already registered: alice@example.com"):
+        with pytest.raises(
+            UserValidationError, match="Email already registered: alice@example.com"
+        ):
             user_service.create_user("alice@example.com", "Bar")
 
 
@@ -45,9 +48,9 @@ class TestCreateUserWithNotification:
     """Tests for user creation with notification."""
 
     def test_sends_welcome_email(
-            self,
-            user_service: UserService,
-            mock_notification_service: Mock,
+        self,
+        user_service: UserService,
+        mock_notification_service: Mock,
     ) -> None:
         """Test that welcome email is sent after user creation."""
         user, result = user_service.create_user_with_notification(
@@ -66,9 +69,9 @@ class TestCreateUserWithNotification:
         )
 
     def test_notification_failure_still_creates_user(
-            self,
-            user_service: UserService,
-            mock_notification_service: Mock,
+        self,
+        user_service: UserService,
+        mock_notification_service: Mock,
     ) -> None:
         """Test that user is created even if notification fails."""
         mock_notification_service.send_welcome_email.return_value = NotificationResult(

@@ -6,7 +6,7 @@ from .asyncio_event_dispatcher import AsyncioEventDispatcher
 from .celery_job_dispatcher import CeleryJobDispatcher
 
 _event_dispatcher = AsyncioEventDispatcher()
-_event_dispatcher.register(AccountCreatedEvent, TrackNewAccountHandler())
+_event_dispatcher.register(AccountCreatedEvent, TrackNewAccountHandler())  # type: ignore[arg-type]
 
 
 def get_event_dispatcher() -> EventDispatcher:

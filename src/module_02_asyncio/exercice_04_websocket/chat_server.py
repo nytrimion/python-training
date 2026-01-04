@@ -4,6 +4,7 @@ Exercise 04: Mini-Chat WebSocket Server.
 This module implements a simple chat server using WebSockets.
 Multiple clients can connect and broadcast messages to each other.
 """
+
 import json
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -16,6 +17,7 @@ app = FastAPI(title="Mini Chat WebSocket")
 
 
 # --- Connection Manager ---
+
 
 @dataclass
 class ConnectionManager:
@@ -77,6 +79,7 @@ class ConnectionManager:
 
 # --- Simple View Manager ---
 
+
 @dataclass
 class SimpleViewManager:
     """
@@ -104,7 +107,7 @@ class SimpleViewManager:
             if not path.exists():
                 raise FileNotFoundError(f"Template '{name}' not found")
 
-            async with aiofiles.open(path, mode='r') as file:
+            async with aiofiles.open(path) as file:
                 self.views[name] = await file.read()
 
         return self.views[name]
@@ -123,6 +126,7 @@ async def get_client() -> HTMLResponse:
 
 
 # --- WebSocket Endpoint ---
+
 
 @app.websocket("/ws/{username}")
 async def websocket_endpoint(websocket: WebSocket, username: str) -> None:
@@ -175,6 +179,7 @@ async def broadcast_users_list() -> None:
         "users": connection_manager.get_users(),
     }
     await connection_manager.broadcast(json.dumps(message))
+
 
 # --- Run instructions ---
 # uvicorn chat_server:app --reload

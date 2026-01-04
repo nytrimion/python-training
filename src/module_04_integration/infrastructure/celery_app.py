@@ -13,15 +13,12 @@ app.conf.update(
     task_serializer="json",
     result_serializer="json",
     accept_content=["json"],
-
     # Timezone
     timezone="Europe/Paris",
     enable_utc=True,
-
     # Reliability
     task_acks_late=True,  # ACK after execution (not before)
     task_reject_on_worker_lost=True,  # Requeue if worker crashes
-
     # Result expiration (1 hour)
     result_expires=3600,
 )
