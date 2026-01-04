@@ -1,13 +1,15 @@
 from abc import ABC, abstractmethod
-from typing import Protocol
+from typing import Protocol, TypeVar
 
 from src.module_04_integration.domain.events import DomainEvent
 
+E = TypeVar("E", bound=DomainEvent, contravariant=True)
 
-class EventHandler(Protocol):
+
+class EventHandler(Protocol[E]):
     """Event handler type."""
 
-    async def __call__(self, event: DomainEvent) -> None: ...
+    async def __call__(self, event: E) -> None: ...
 
 
 class EventDispatcher(ABC):
