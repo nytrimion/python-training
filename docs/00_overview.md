@@ -55,16 +55,16 @@ Transition de développeur senior PHP vers Python, en capitalisant sur l'experti
 ---
 
 ### Module 4 : Projet Intégrateur
-**Thèmes** : EventDispatcher DDD avec 3 implémentations
+**Thèmes** : Event-Driven Architecture avec Clean Architecture
 
 | Objectif | Statut |
 |----------|--------|
-| Implémenter SyncEventDispatcher | ⬜ |
-| Implémenter AsyncioEventDispatcher | ⬜ |
-| Implémenter CeleryEventDispatcher | ⬜ |
-| Écrire les tests pour chaque implémentation | ⬜ |
-| Créer des benchmarks comparatifs | ⬜ |
-| Documenter les trade-offs | ⬜ |
+| Implémenter SyncEventDispatcher | ✅ |
+| Implémenter AsyncioEventDispatcher | ✅ |
+| Implémenter CeleryJobDispatcher (séparation Event/Job) | ✅ |
+| Intégrer FastAPI avec Dependency Injection | ✅ |
+| Écrire les tests pour chaque implémentation | ✅ |
+| Comprendre les trade-offs Event vs Job dispatching | ✅ |
 
 → [Accéder au module](./modules/module_04_integration/README.md)
 
@@ -76,9 +76,9 @@ Transition de développeur senior PHP vers Python, en capitalisant sur l'experti
 Module 1 : Fondations     [✅✅✅✅✅] 100% ✓
 Module 2 : Asyncio        [✅✅✅✅✅] 100% ✓
 Module 3 : Écosystème     [✅✅✅✅✅] 100% ✓
-Module 4 : Intégration    [⬜⬜⬜⬜⬜] 0%
+Module 4 : Intégration    [✅✅✅✅✅] 100% ✓
 ─────────────────────────────────────
-Total                     [✅✅✅⬜⬜] 75%
+Total                     [✅✅✅✅✅] 100% 🎉
 ```
 
 ---

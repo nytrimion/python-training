@@ -76,7 +76,7 @@ training/
 | **1. Fondations**  | GIL, long-running processes, syntaxe idiomatique | ✅      |
 | **2. Asyncio**     | Event loop, async/await, FastAPI, WebSockets     | ✅      |
 | **3. Écosystème**  | Celery, SQLAlchemy, pytest                       | ✅      |
-| **4. Intégration** | Projet EventDispatcher DDD                       | ⬜      |
+| **4. Intégration** | Projet EventDispatcher DDD                       | ✅      |
 
 ## Commandes utiles
 
